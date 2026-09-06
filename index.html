@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ระบบ FinTrack Pro - โรงเรียนบ้านทองอินทร์</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Sarabun', sans-serif; }
+    body { font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
     @media print {
       body * { visibility: hidden; }
       #printReportArea, #printReportArea * { visibility: visible; }
@@ -22,10 +22,10 @@
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
 
   <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900">
-    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 border border-slate-100 text-center">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 space-y-6 border border-slate-100 text-center">
       <div class="space-y-3">
         <div class="inline-flex p-2 bg-white rounded-2xl shadow-md border border-slate-100">
-          <img src="images.jpeg" alt="ตราโรงเรียนบ้านทองอินทร์" class="w-24 h-24 object-contain mx-auto" onerror="this.src='https://placehold.co/100x100?text=Logo'">
+          <img src="images.jpeg" alt="ตราโรงเรียนบ้านทองอินทร์" class="w-20 h-20 sm:w-24 sm:h-24 object-contain mx-auto" onerror="this.src='https://placehold.co/100x100?text=Logo'">
         </div>
         <div>
           <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">ระบบ FinTrack Pro</h2>
@@ -66,41 +66,74 @@
     </div>
   </div>
 
-  <div id="mainApp" class="hidden flex flex-col md:flex-row min-h-screen">
+  <div id="mainApp" class="hidden min-h-screen flex flex-col md:flex-row">
     
-    <aside class="w-full md:w-64 bg-indigo-900 text-white flex-shrink-0 flex flex-col shadow-xl z-30">
-      <div class="p-4 border-b border-indigo-800 flex items-center gap-3">
-        <div class="bg-white p-1 rounded-xl shadow-sm flex items-center justify-center w-11 h-11 overflow-hidden flex-shrink-0">
-          <img src="images.jpeg" alt="ตราโรงเรียนบ้านทองอินทร์" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100?text=Logo'">
+    <div class="md:hidden bg-indigo-900 text-white p-3 flex items-center justify-between shadow-md sticky top-0 z-40">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-white p-0.5 rounded-lg w-8 h-8 flex items-center justify-center overflow-hidden">
+          <img src="images.jpeg" alt="ตราโรงเรียน" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/80x80?text=Logo'">
         </div>
         <div>
-          <h1 class="text-base font-bold tracking-tight text-yellow-300">ระบบ FinTrack Pro</h1>
-          <p class="text-xs text-indigo-200">โรงเรียนบ้านทองอินทร์</p>
+          <h1 class="text-sm font-bold text-yellow-300 leading-tight">FinTrack Pro</h1>
+          <p class="text-[10px] text-indigo-200 leading-tight">รร.บ้านทองอินทร์</p>
         </div>
       </div>
+      <button onclick="toggleMobileSidebar()" class="p-2 rounded-lg bg-indigo-800 text-white hover:bg-indigo-700 focus:outline-none">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
 
-      <nav class="flex-1 p-3 space-y-1 text-xs">
+    <div id="sidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden md:hidden"></div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out w-64 bg-indigo-900 text-white flex-shrink-0 flex flex-col shadow-2xl md:shadow-xl z-50">
+      <div class="p-4 border-b border-indigo-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="bg-white p-1 rounded-xl shadow-sm flex items-center justify-center w-11 h-11 overflow-hidden flex-shrink-0">
+            <img src="images.jpeg" alt="ตราโรงเรียนบ้านทองอินทร์" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100?text=Logo'">
+          </div>
+          <div>
+            <h1 class="text-base font-bold tracking-tight text-yellow-300">ระบบ FinTrack Pro</h1>
+            <p class="text-xs text-indigo-200">โรงเรียนบ้านทองอินทร์</p>
+          </div>
+        </div>
+        <button onclick="toggleMobileSidebar()" class="md:hidden text-indigo-300 hover:text-white p-1">✕</button>
+      </div>
+
+      <nav class="flex-1 p-3 space-y-1 text-xs overflow-y-auto">
         <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-indigo-300">เมนูการจัดการ</div>
 
-        <button onclick="openReportModal()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white bg-indigo-800/80 hover:bg-indigo-700 transition font-medium shadow-sm">
+        <button onclick="openReportModal(); closeSidebarIfMobile();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white bg-indigo-800/80 hover:bg-indigo-700 transition font-medium shadow-sm">
           <svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           รายงานสรุปประจำเดือน/ปี
         </button>
 
-        <button onclick="exportCurrentViewCSV()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
+        <button onclick="exportCurrentViewCSV(); closeSidebarIfMobile();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
           <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           ส่งออกข้อมูล (CSV)
         </button>
 
-        <button onclick="openMasterListModal()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
+        <button onclick="openMasterListModal(); closeSidebarIfMobile();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
           <svg class="w-4 h-4 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
           จัดการครู / โครงการ
         </button>
 
-        <button onclick="openBudgetModal()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
+        <button onclick="openBudgetModal(); closeSidebarIfMobile();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-white hover:bg-indigo-800 transition font-medium">
           <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           งบตั้งต้นประจำปี
         </button>
+
+        <div class="pt-3 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-indigo-300 border-t border-indigo-800/60 mt-3">ย้ายข้อมูล / สำรองข้อมูล</div>
+
+        <button onclick="backupAllData()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-indigo-100 hover:bg-indigo-800 transition font-medium">
+          <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+          สำรองข้อมูล (ไปเครื่องอื่น)
+        </button>
+
+        <label class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-indigo-100 hover:bg-indigo-800 transition font-medium cursor-pointer">
+          <svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          <span>นำเข้าข้อมูล (จากเครื่องเดิม)</span>
+          <input type="file" id="restoreFileInput" accept=".json" onchange="restoreAllData(event)" class="hidden">
+        </label>
       </nav>
 
       <div class="p-3 border-t border-indigo-800 bg-indigo-950/50">
@@ -109,7 +142,7 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span class="text-indigo-200">เจ้าหน้าที่การเงิน</span>
           </div>
-          <button onclick="handleLogout()" class="flex items-center gap-1 px-2 py-1 bg-rose-600/80 hover:bg-rose-600 text-white rounded-lg transition" title="ออกจากระบบ">
+          <button onclick="handleLogout()" class="flex items-center gap-1 px-2.5 py-1 bg-rose-600/80 hover:bg-rose-600 text-white rounded-lg transition" title="ออกจากระบบ">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             ออก
           </button>
@@ -118,88 +151,88 @@
     </aside>
 
     <div class="flex-1 flex flex-col overflow-y-auto">
-      <main class="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto w-full">
+      <main class="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto w-full">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">งบประมาณรวมทั้งหมด</p>
-            <p id="totalBudgetDisplay" class="text-2xl font-bold text-slate-800 mt-1">0.00</p>
-            <div id="inflowBreakdownText" class="text-xs text-slate-400 mt-1">งบตั้งต้น + เงินอุดหนุนเข้า</div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+            <p class="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">งบประมาณรวม</p>
+            <p id="totalBudgetDisplay" class="text-lg sm:text-2xl font-bold text-slate-800 mt-1">0.00</p>
+            <div id="inflowBreakdownText" class="text-[10px] text-slate-400 mt-0.5 truncate">งบตั้งต้น + เงินอุดหนุนเข้า</div>
           </div>
 
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <p class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">เงินอุดหนุนรับเข้าสะสม (+)</p>
-            <p id="totalInflowDisplay" class="text-2xl font-bold text-emerald-600 mt-1">0.00</p>
-            <div id="inflowCountText" class="text-xs text-emerald-600 mt-1">0 รายการรับเข้า</div>
+          <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+            <p class="text-[11px] sm:text-xs font-semibold text-emerald-600 uppercase tracking-wider">รับเงินอุดหนุน (+)</p>
+            <p id="totalInflowDisplay" class="text-lg sm:text-2xl font-bold text-emerald-600 mt-1">0.00</p>
+            <div id="inflowCountText" class="text-[10px] text-emerald-600 mt-0.5">0 รายการรับเข้า</div>
           </div>
 
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <p class="text-xs font-semibold text-amber-600 uppercase tracking-wider">ยอดเบิกจ่ายสะสม (-)</p>
-            <p id="totalSpentDisplay" class="text-2xl font-bold text-amber-600 mt-1">0.00</p>
-            <div id="spentPercent" class="text-xs text-amber-600 mt-1">0.0% ของงบทั้งหมด</div>
+          <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+            <p class="text-[11px] sm:text-xs font-semibold text-amber-600 uppercase tracking-wider">เบิกจ่ายสะสม (-)</p>
+            <p id="totalSpentDisplay" class="text-lg sm:text-2xl font-bold text-amber-600 mt-1">0.00</p>
+            <div id="spentPercent" class="text-[10px] text-amber-600 mt-0.5">0.0% ของงบรวม</div>
           </div>
 
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">งบประมาณคงเหลือสุทธิ</p>
-            <p id="totalRemainingDisplay" class="text-2xl font-bold text-indigo-600 mt-1">0.00</p>
-            <div class="text-xs text-indigo-500 mt-1">พร้อมเบิกจ่าย</div>
+          <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+            <p class="text-[11px] sm:text-xs font-semibold text-indigo-600 uppercase tracking-wider">คงเหลือสุทธิ</p>
+            <p id="totalRemainingDisplay" class="text-lg sm:text-2xl font-bold text-indigo-600 mt-1">0.00</p>
+            <div class="text-[10px] text-indigo-500 mt-0.5">พร้อมเบิกจ่าย</div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
-            <h2 class="text-base font-semibold text-slate-800 mb-4">สัดส่วนการเบิกจ่ายเทียบกับงบรวมแต่ละหมวด</h2>
-            <div class="relative flex-1 min-h-[260px]">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div class="lg:col-span-2 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+            <h2 class="text-sm sm:text-base font-semibold text-slate-800 mb-3">สัดส่วนการเบิกจ่ายเทียบกับงบรวมแต่ละหมวด</h2>
+            <div class="relative flex-1 min-h-[220px] sm:min-h-[260px]">
               <canvas id="budgetChart"></canvas>
             </div>
           </div>
-          <div class="lg:col-span-1 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <h2 class="text-base font-semibold text-slate-800 mb-3">สรุปคงเหลือแยกหมวดหมู่</h2>
-            <div id="categoryProgressList" class="space-y-3.5 overflow-y-auto max-h-[300px] pr-1"></div>
+          <div class="lg:col-span-1 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-sm sm:text-base font-semibold text-slate-800 mb-3">สรุปคงเหลือแยกหมวดหมู่</h2>
+            <div id="categoryProgressList" class="space-y-3 overflow-y-auto max-h-[260px] sm:max-h-[300px] pr-1"></div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
-          <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-              <div class="inline-flex p-1 bg-slate-100 rounded-lg text-xs font-medium">
-                <button id="viewExpenseBtn" onclick="switchTableView('EXPENSE')" class="px-3 py-1 rounded-md bg-white text-indigo-700 shadow-xs font-bold">
+          <div class="lg:col-span-2 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col order-2 lg:order-1">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 mb-3">
+              <div class="inline-flex p-1 bg-slate-100 rounded-lg text-xs font-medium w-full sm:w-auto">
+                <button id="viewExpenseBtn" onclick="switchTableView('EXPENSE')" class="flex-1 sm:flex-none px-3 py-1 rounded-md bg-white text-indigo-700 shadow-xs font-bold text-center">
                   ประวัติเบิกจ่าย (<span id="countExpenseBadge">0</span>)
                 </button>
-                <button id="viewInflowBtn" onclick="switchTableView('INFLOW')" class="px-3 py-1 rounded-md text-slate-600 hover:text-emerald-700 font-bold">
-                  ประวัติเงินอุดหนุนเข้า (<span id="countInflowBadge">0</span>)
+                <button id="viewInflowBtn" onclick="switchTableView('INFLOW')" class="flex-1 sm:flex-none px-3 py-1 rounded-md text-slate-600 hover:text-emerald-700 font-bold text-center">
+                  เงินเข้า (<span id="countInflowBadge">0</span>)
                 </button>
               </div>
 
               <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-                <select id="filterDocType" onchange="renderApp()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
-                  <option value="ALL">ทุกเอกสาร (บค/บจ/บร/บย...)</option>
+                <select id="filterDocType" onchange="renderApp()" class="px-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none flex-1 sm:flex-none">
+                  <option value="ALL">ทุกเอกสาร</option>
                   <option value="บค">บค (ใบเบิก/ฎีกา)</option>
                   <option value="บจ">บจ (ใบสำคัญจ่าย)</option>
                   <option value="บร">บร (ใบเสร็จรับเงิน)</option>
                   <option value="บย">บย (สัญญายืมเงิน)</option>
                   <option value="ชง">ชง (ใบสั่งซื้อ/จ้าง)</option>
                   <option value="บฝ">บฝ (ใบนำฝาก/โอน)</option>
-                  <option value="นส">นส (หนังสือแจ้งจัดสรร)</option>
+                  <option value="นส">นส (หนังสือจัดสรร)</option>
                 </select>
-                <select id="filterCategory" onchange="renderApp()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none max-w-[150px]">
-                  <option value="ALL">ทุกหมวดหมู่งบ</option>
+                <select id="filterCategory" onchange="renderApp()" class="px-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none flex-1 sm:flex-none max-w-[140px]">
+                  <option value="ALL">ทุกหมวดงบ</option>
                 </select>
-                <input type="text" id="searchKeyword" oninput="renderApp()" placeholder="ค้นหารายการ / ครู / โครงการ..." class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none w-full sm:w-36">
+                <input type="text" id="searchKeyword" oninput="renderApp()" placeholder="ค้นหารายการ..." class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none w-full sm:w-36">
               </div>
             </div>
 
             <div class="overflow-x-auto flex-1">
-              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="border-b border-slate-200 bg-slate-50 text-slate-500 font-medium">
-                    <th class="py-2.5 px-3 whitespace-nowrap">วันที่</th>
-                    <th class="py-2.5 px-3 whitespace-nowrap">เอกสาร</th>
-                    <th class="py-2.5 px-3 whitespace-nowrap">หมวดงบ / บัญชี</th>
-                    <th class="py-2.5 px-3">รายละเอียดโครงการ & รายการ</th>
-                    <th id="thAmountHeader" class="py-2.5 px-3 text-right whitespace-nowrap">จำนวนเงินเบิก</th>
-                    <th class="py-2.5 px-3 text-center whitespace-nowrap">จัดการ</th>
+                    <th class="py-2.5 px-2.5 whitespace-nowrap">วันที่</th>
+                    <th class="py-2.5 px-2 whitespace-nowrap">เอกสาร</th>
+                    <th class="py-2.5 px-2.5 whitespace-nowrap">หมวดงบ / บัญชี</th>
+                    <th class="py-2.5 px-2.5">รายละเอียด</th>
+                    <th id="thAmountHeader" class="py-2.5 px-2.5 text-right whitespace-nowrap">จำนวนเงิน</th>
+                    <th class="py-2.5 px-2 text-center whitespace-nowrap">ลบ</th>
                   </tr>
                 </thead>
                 <tbody id="recordsTableBody" class="divide-y divide-slate-100"></tbody>
@@ -207,8 +240,8 @@
             </div>
           </div>
 
-          <div class="lg:col-span-1 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <div class="flex p-1 bg-slate-100 rounded-xl mb-4 text-xs font-semibold">
+          <div class="lg:col-span-1 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 order-1 lg:order-2">
+            <div class="flex p-1 bg-slate-100 rounded-xl mb-3 text-xs font-semibold">
               <button id="tabExpenseBtn" onclick="switchFormMode('EXPENSE')" class="flex-1 py-2 rounded-lg transition bg-white text-indigo-700 shadow-sm font-bold">
                 - บันทึกเบิกจ่าย
               </button>
@@ -217,26 +250,26 @@
               </button>
             </div>
 
-            <form id="expenseForm" onsubmit="handleAddExpense(event)" class="space-y-3">
+            <form id="expenseForm" onsubmit="handleAddExpense(event)" class="space-y-2.5">
               <div class="text-xs font-bold text-indigo-700 flex items-center gap-1.5 pb-1 border-b">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                บันทึกรายการเบิกจ่ายงบประมาณ
+                บันทึกรายการเบิกจ่าย
               </div>
               
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">วันที่เบิก</label>
-                  <input type="date" id="expDate" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">วันที่เบิก</label>
+                  <input type="date" id="expDate" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">ประเภทเอกสาร</label>
-                  <select id="expDocType" onchange="toggleCustomDocType('exp')" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none font-medium text-indigo-800">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">ประเภทเอกสาร</label>
+                  <select id="expDocType" onchange="toggleCustomDocType('exp')" class="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none font-medium text-indigo-800">
                     <option value="บค">บค (ใบเบิก/ฎีกา)</option>
                     <option value="บจ">บจ (ใบสำคัญจ่าย)</option>
                     <option value="บร">บร (ใบเสร็จรับเงิน)</option>
                     <option value="บย">บย (สัญญายืมเงิน)</option>
-                    <option value="ชง">ชง (ใบสั่งซื้อ/สั่งจ้าง)</option>
-                    <option value="บฝ">บฝ (ใบนำฝาก/ใบโอน)</option>
+                    <option value="ชง">ชง (ใบสั่งซื้อ/จ้าง)</option>
+                    <option value="บฝ">บฝ (ใบนำฝาก/โอน)</option>
                     <option value="นส">นส (หนังสือราชการ)</option>
                     <option value="อื่นๆ">อื่นๆ (ระบุเอง)</option>
                   </select>
@@ -244,68 +277,68 @@
               </div>
 
               <div id="expCustomDocDiv" class="hidden">
-                <label class="block text-xs font-medium text-amber-700 mb-1">ระบุชื่อเอกสารที่ใช้</label>
+                <label class="block text-[11px] font-medium text-amber-700 mb-0.5">ระบุชื่อเอกสารที่ใช้</label>
                 <input type="text" id="expCustomDocType" placeholder="เช่น สัญญาจ้าง, ใบส่งของ" class="w-full px-2.5 py-1.5 text-xs border border-amber-300 rounded-lg focus:outline-none">
               </div>
 
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">เลขที่เอกสาร</label>
-                  <input type="text" id="expDocNo" placeholder="เช่น 01/69, 12" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">เลขที่เอกสาร</label>
+                  <input type="text" id="expDocNo" placeholder="เช่น 01/69" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">จำนวนเงิน (บาท)</label>
-                  <input type="number" id="expAmount" step="0.01" min="0.01" placeholder="0.00" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">จำนวนเงิน (บาท)</label>
+                  <input type="number" id="expAmount" step="0.01" min="0.01" placeholder="0.00" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none font-semibold text-right">
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">หมวดหมู่งบประมาณ / บัญชี</label>
-                <select id="expCategory" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></select>
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">หมวดหมู่งบประมาณ / บัญชี</label>
+                <select id="expCategory" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none"></select>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">ชื่อโครงการ</label>
-                <select id="expProject" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></select>
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">ชื่อโครงการ</label>
+                <select id="expProject" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none"></select>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">ผู้รับผิดชอบ / ผู้ขอเบิก</label>
-                <select id="expResponsible" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></select>
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">ผู้รับผิดชอบ / ผู้ขอเบิก</label>
+                <select id="expResponsible" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none"></select>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">รายการ / รายละเอียดการเบิก</label>
-                <input type="text" id="expTitle" placeholder="เช่น ซื้อวัสดุการศึกษา, เบิกจ่ายเงินสดให้นักเรียน" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">รายการ / รายละเอียดการเบิก</label>
+                <input type="text" id="expTitle" placeholder="เช่น ซื้อวัสดุการศึกษา" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">หมายเหตุเพิ่มเติม</label>
-                <input type="text" id="expNote" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">หมายเหตุเพิ่มเติม</label>
+                <input type="text" id="expNote" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
               </div>
 
-              <button type="submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow transition mt-2">
+              <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow transition mt-1">
                 - บันทึกรายการเบิกจ่าย
               </button>
             </form>
 
-            <form id="inflowForm" onsubmit="handleAddInflow(event)" class="space-y-3 hidden">
+            <form id="inflowForm" onsubmit="handleAddInflow(event)" class="space-y-2.5 hidden">
               <div class="text-xs font-bold text-emerald-700 flex items-center gap-1.5 pb-1 border-b">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                บันทึกรับเงินอุดหนุนเข้า / จัดสรรเพิ่ม
+                บันทึกรับเงินอุดหนุนเข้า
               </div>
               
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">วันที่ได้รับเงิน</label>
-                  <input type="date" id="inflowDate" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">วันที่ได้รับเงิน</label>
+                  <input type="date" id="inflowDate" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">เอกสารอ้างอิง</label>
-                  <select id="inflowDocType" onchange="toggleCustomDocType('inf')" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-emerald-800">
-                    <option value="นส">นส (หนังสือแจ้งจัดสรร)</option>
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">เอกสารอ้างอิง</label>
+                  <select id="inflowDocType" onchange="toggleCustomDocType('inf')" class="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none font-medium text-emerald-800">
+                    <option value="นส">นส (หนังสือจัดสรร)</option>
                     <option value="บร">บร (ใบเสร็จรับเงิน)</option>
-                    <option value="บฝ">บฝ (ใบนำฝาก/ใบโอน)</option>
+                    <option value="บฝ">บฝ (ใบนำฝาก/โอน)</option>
                     <option value="บค">บค (ใบสำคัญรับเงิน)</option>
                     <option value="อื่นๆ">อื่นๆ (ระบุเอง)</option>
                   </select>
@@ -313,34 +346,34 @@
               </div>
 
               <div id="infCustomDocDiv" class="hidden">
-                <label class="block text-xs font-medium text-emerald-700 mb-1">ระบุชื่อเอกสารอ้างอิง</label>
+                <label class="block text-[11px] font-medium text-emerald-700 mb-0.5">ระบุชื่อเอกสารอ้างอิง</label>
                 <input type="text" id="infCustomDocType" placeholder="เช่น สลิปโอนเงิน อปท." class="w-full px-2.5 py-1.5 text-xs border border-emerald-300 rounded-lg focus:outline-none">
               </div>
 
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">เลขที่เอกสาร</label>
-                  <input type="text" id="inflowDocNo" placeholder="เช่น ศธ 04055/124, บร.01/69" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">เลขที่เอกสาร</label>
+                  <input type="text" id="inflowDocNo" placeholder="เช่น ศธ..." class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">จำนวนเงินรับ (บาท)</label>
-                  <input type="number" id="inflowAmount" step="0.01" min="0.01" placeholder="0.00" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  <label class="block text-[11px] font-medium text-slate-600 mb-0.5">จำนวนเงินรับ (บาท)</label>
+                  <input type="number" id="inflowAmount" step="0.01" min="0.01" placeholder="0.00" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none font-semibold text-right">
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">หมวดหมู่งบที่ได้รับเงิน / บัญชี</label>
-                <select id="inflowCategory" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"></select>
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">หมวดหมู่งบที่ได้รับเงิน / บัญชี</label>
+                <select id="inflowCategory" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none"></select>
               </div>
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">รายการ / ที่มาของเงินอุดหนุน</label>
-                <input type="text" id="inflowTitle" placeholder="เช่น เงินอุดหนุน กสศ. ภาคเรียนที่ 1/69, เงินรายหัวงวด 1" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">รายการ / ที่มาของเงิน</label>
+                <input type="text" id="inflowTitle" placeholder="เช่น เงินอุดหนุน กสศ. ภาคเรียนที่ 1/69" required class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">แหล่งที่มา / หมายเหตุ</label>
-                <input type="text" id="inflowNote" placeholder="เช่น กสศ., สพป., อบต." class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">แหล่งที่มา / หมายเหตุ</label>
+                <input type="text" id="inflowNote" placeholder="เช่น กสศ., สพป., อบต." class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
               </div>
-              <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow transition mt-2">
+              <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow transition mt-1">
                 + บันทึกรับเงินอุดหนุน
               </button>
             </form>
@@ -353,152 +386,154 @@
     </div>
   </div>
 
-  <div id="reportModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
-      <div class="flex justify-between items-center border-b pb-3 no-print">
+  <div id="reportModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-6 shadow-2xl space-y-3 sm:space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-2.5 no-print">
         <div class="flex items-center gap-2">
-          <div class="p-2 bg-sky-100 text-sky-700 rounded-xl">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <div class="p-1.5 bg-sky-100 text-sky-700 rounded-lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
           <div>
-            <h3 class="text-base font-bold text-slate-800">รายงานสรุปผลการบริหารงบประมาณสถานศึกษา (ระบบ FinTrack Pro)</h3>
-            <p class="text-xs text-slate-400">เลือกดูรายงานสรุปแบบรายเดือน หรือสรุปทั้งปีงบประมาณ</p>
+            <h3 class="text-sm sm:text-base font-bold text-slate-800 leading-tight">รายงานสรุปผลการบริหารงบประมาณ (FinTrack Pro)</h3>
+            <p class="text-[10px] sm:text-xs text-slate-400">เลือกดูรายงานสรุปแบบรายเดือน หรือสรุปทั้งปีงบประมาณ</p>
           </div>
         </div>
-        <button onclick="document.getElementById('reportModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+        <button onclick="document.getElementById('reportModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg p-1">✕</button>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 no-print">
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-slate-50 rounded-xl border border-slate-100 no-print">
         <div>
-          <label class="block text-[11px] font-semibold text-slate-600 mb-1">รูปแบบรายงาน</label>
-          <select id="reportPeriodType" onchange="toggleReportPeriodControls()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
-            <option value="MONTHLY">รายงานสรุปประจำเดือน</option>
-            <option value="ANNUAL">รายงานสรุปประจำปีงบประมาณ</option>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-slate-600 mb-0.5">รูปแบบรายงาน</label>
+          <select id="reportPeriodType" onchange="toggleReportPeriodControls()" class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none">
+            <option value="MONTHLY">ประจำเดือน</option>
+            <option value="ANNUAL">ประจำปีงบประมาณ</option>
           </select>
         </div>
 
         <div id="reportMonthSelectDiv">
-          <label class="block text-[11px] font-semibold text-slate-600 mb-1">ประจำเดือน</label>
-          <input type="month" id="reportMonthInput" onchange="generateReportData()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-slate-600 mb-0.5">ประจำเดือน</label>
+          <input type="month" id="reportMonthInput" onchange="generateReportData()" class="px-2 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none">
         </div>
 
         <div id="reportYearSelectDiv" class="hidden">
-          <label class="block text-[11px] font-semibold text-slate-600 mb-1">ปีงบประมาณ (พ.ศ.)</label>
-          <select id="reportFiscalYearSelect" onchange="generateReportData()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-slate-600 mb-0.5">ปีงบประมาณ (พ.ศ.)</label>
+          <select id="reportFiscalYearSelect" onchange="generateReportData()" class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none">
             <option value="2569">ปีงบประมาณ 2569 (1 ต.ค. 68 - 30 ก.ย. 69)</option>
             <option value="2568">ปีงบประมาณ 2568 (1 ต.ค. 67 - 30 ก.ย. 68)</option>
           </select>
         </div>
 
         <div class="ml-auto flex items-end">
-          <button onclick="window.print()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow flex items-center gap-1.5">
+          <button onclick="window.print()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow flex items-center gap-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H9v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            พิมพ์รายงาน / บันทึก PDF
+            พิมพ์ / PDF
           </button>
         </div>
       </div>
 
-      <div id="printReportArea" class="flex-1 overflow-y-auto space-y-4 p-4 bg-white border border-slate-200 rounded-xl">
-        <div class="text-center space-y-1 border-b pb-3">
-          <h2 class="text-lg font-bold text-slate-900">รายงานสรุปการรับ-จ่ายเงินงบประมาณสถานศึกษา (ระบบ FinTrack Pro)</h2>
-          <p class="text-sm font-semibold text-slate-700">โรงเรียนบ้านทองอินทร์</p>
-          <p id="reportHeaderSubtitle" class="text-xs text-slate-600">ประจำเดือนตุลาคม พ.ศ. 2568</p>
+      <div id="printReportArea" class="flex-1 overflow-y-auto space-y-3 sm:space-y-4 p-3 sm:p-4 bg-white border border-slate-200 rounded-xl text-xs">
+        <div class="text-center space-y-0.5 border-b pb-2">
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">รายงานสรุปการรับ-จ่ายเงินงบประมาณสถานศึกษา (ระบบ FinTrack Pro)</h2>
+          <p class="text-xs sm:text-sm font-semibold text-slate-700">โรงเรียนบ้านทองอินทร์</p>
+          <p id="reportHeaderSubtitle" class="text-[11px] sm:text-xs text-slate-600">ประจำเดือนตุลาคม พ.ศ. 2568</p>
         </div>
 
-        <div class="grid grid-cols-4 gap-2 text-center text-xs">
-          <div class="p-2.5 bg-slate-50 border rounded-lg">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+          <div class="p-2 bg-slate-50 border rounded-lg">
             <div class="text-slate-500 text-[10px]">ยอดยกมา/งบตั้งต้น</div>
-            <div id="repCardBase" class="font-bold text-slate-800 text-sm mt-0.5">0.00</div>
+            <div id="repCardBase" class="font-bold text-slate-800 text-xs sm:text-sm mt-0.5">0.00</div>
           </div>
-          <div class="p-2.5 bg-emerald-50 border border-emerald-100 rounded-lg">
-            <div class="text-emerald-600 text-[10px]">เงินอุดหนุนรับเข้า (+)</div>
-            <div id="repCardInflow" class="font-bold text-emerald-700 text-sm mt-0.5">0.00</div>
+          <div class="p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
+            <div class="text-emerald-600 text-[10px]">รับเงินเข้า (+)</div>
+            <div id="repCardInflow" class="font-bold text-emerald-700 text-xs sm:text-sm mt-0.5">0.00</div>
           </div>
-          <div class="p-2.5 bg-amber-50 border border-amber-100 rounded-lg">
-            <div class="text-amber-600 text-[10px]">ยอดเบิกจ่ายแล้ว (-)</div>
-            <div id="repCardSpent" class="font-bold text-amber-700 text-sm mt-0.5">0.00</div>
+          <div class="p-2 bg-amber-50 border border-amber-100 rounded-lg">
+            <div class="text-amber-600 text-[10px]">เบิกจ่าย (-)</div>
+            <div id="repCardSpent" class="font-bold text-amber-700 text-xs sm:text-sm mt-0.5">0.00</div>
           </div>
-          <div class="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg">
+          <div class="p-2 bg-indigo-50 border border-indigo-100 rounded-lg">
             <div class="text-indigo-600 text-[10px]">คงเหลือสุทธิ</div>
-            <div id="repCardRemain" class="font-bold text-indigo-700 text-sm mt-0.5">0.00</div>
+            <div id="repCardRemain" class="font-bold text-indigo-700 text-xs sm:text-sm mt-0.5">0.00</div>
           </div>
         </div>
 
         <div>
-          <h4 class="text-xs font-bold text-slate-800 mb-2">สรุปรายรับ-รายจ่าย แยกตามหมวดงบประมาณ</h4>
-          <table class="w-full text-left border-collapse text-xs border border-slate-300">
-            <thead>
-              <tr class="bg-slate-100 border-b border-slate-300 text-slate-700 font-semibold">
-                <th class="py-2 px-2.5 border-r border-slate-300">หมวดงบประมาณ / บัญชี</th>
-                <th class="py-2 px-2.5 text-right border-r border-slate-300">งบตั้งต้น</th>
-                <th class="py-2 px-2.5 text-right border-r border-slate-300 text-emerald-700">รับเงินเข้า (+)</th>
-                <th class="py-2 px-2.5 text-right border-r border-slate-300 text-amber-700">เบิกจ่าย (-)</th>
-                <th class="py-2 px-2.5 text-right font-bold text-indigo-800">คงเหลือสุทธิ</th>
-              </tr>
-            </thead>
-            <tbody id="reportTableBody" class="divide-y divide-slate-200"></tbody>
-          </table>
+          <h4 class="text-xs font-bold text-slate-800 mb-1.5">สรุปรายรับ-รายจ่าย แยกตามหมวดงบประมาณ</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px] sm:text-xs border border-slate-300">
+              <thead>
+                <tr class="bg-slate-100 border-b border-slate-300 text-slate-700 font-semibold">
+                  <th class="py-1.5 px-2 border-r border-slate-300">หมวดงบประมาณ</th>
+                  <th class="py-1.5 px-2 text-right border-r border-slate-300">งบตั้งต้น</th>
+                  <th class="py-1.5 px-2 text-right border-r border-slate-300 text-emerald-700">รับเข้า (+)</th>
+                  <th class="py-1.5 px-2 text-right border-r border-slate-300 text-amber-700">เบิกจ่าย (-)</th>
+                  <th class="py-1.5 px-2 text-right font-bold text-indigo-800">คงเหลือสุทธิ</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="pt-6 grid grid-cols-2 gap-6 text-center text-xs">
+        <div class="pt-4 grid grid-cols-2 gap-4 text-center text-xs">
           <div>
             <p>ลงชื่อ..........................................................ผู้รายงาน</p>
             <p class="mt-1">(..........................................................)</p>
-            <p class="text-[11px] text-slate-500 mt-0.5 font-medium">เจ้าหน้าที่การเงิน</p>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 font-medium">เจ้าหน้าที่การเงิน</p>
           </div>
           <div>
             <p>ลงชื่อ..........................................................ผู้รับรอง</p>
             <p class="mt-1">(..........................................................)</p>
-            <p class="text-[11px] text-slate-500 mt-0.5 font-medium">ผู้อำนวยการโรงเรียนบ้านทองอินทร์</p>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 font-medium">ผู้อำนวยการโรงเรียนบ้านทองอินทร์</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="masterListModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="text-lg font-bold text-slate-800">จัดการลิสต์รายชื่อผู้รับผิดชอบ และชื่อโครงการ</h3>
-        <button onclick="document.getElementById('masterListModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+  <div id="masterListModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl space-y-3 sm:space-y-4">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-sm sm:text-base font-bold text-slate-800">จัดการลิสต์รายชื่อผู้รับผิดชอบ และชื่อโครงการ</h3>
+        <button onclick="document.getElementById('masterListModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg p-1">✕</button>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="border border-slate-200 p-3 rounded-xl space-y-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+        <div class="border border-slate-200 p-2.5 sm:p-3 rounded-xl space-y-2">
           <label class="block text-xs font-bold text-indigo-700">รายชื่อผู้รับผิดชอบ / ครู</label>
           <div class="flex gap-1.5">
             <input type="text" id="newTeacherInput" placeholder="เพิ่มชื่อครู..." class="flex-1 px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
             <button onclick="addTeacherItem()" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg">+ เพิ่ม</button>
           </div>
-          <div id="teachersListDisplay" class="max-h-48 overflow-y-auto space-y-1 pr-1 text-xs"></div>
+          <div id="teachersListDisplay" class="max-h-36 sm:max-h-48 overflow-y-auto space-y-1 pr-1 text-xs"></div>
         </div>
 
-        <div class="border border-slate-200 p-3 rounded-xl space-y-2">
+        <div class="border border-slate-200 p-2.5 sm:p-3 rounded-xl space-y-2">
           <label class="block text-xs font-bold text-indigo-700">รายชื่อโครงการ</label>
           <div class="flex gap-1.5">
             <input type="text" id="newProjectInput" placeholder="เพิ่มชื่อโครงการ..." class="flex-1 px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
             <button onclick="addProjectItem()" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg">+ เพิ่ม</button>
           </div>
-          <div id="projectsListDisplay" class="max-h-48 overflow-y-auto space-y-1 pr-1 text-xs"></div>
+          <div id="projectsListDisplay" class="max-h-36 sm:max-h-48 overflow-y-auto space-y-1 pr-1 text-xs"></div>
         </div>
       </div>
 
-      <div class="flex justify-end pt-3 border-t">
-        <button onclick="document.getElementById('masterListModal').classList.add('hidden')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg">เรียบร้อย</button>
+      <div class="flex justify-end pt-2 border-t">
+        <button onclick="document.getElementById('masterListModal').classList.add('hidden')" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg">เรียบร้อย</button>
       </div>
     </div>
   </div>
 
-  <div id="budgetModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="text-lg font-bold text-slate-800">กำหนดวงเงินงบประมาณตั้งต้นประจำปี</h3>
-        <button onclick="document.getElementById('budgetModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+  <div id="budgetModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl space-y-3 sm:space-y-4">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-sm sm:text-base font-bold text-slate-800">กำหนดวงเงินงบประมาณตั้งต้นประจำปี</h3>
+        <button onclick="document.getElementById('budgetModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg p-1">✕</button>
       </div>
-      <div id="budgetSettingsList" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
-      <div class="flex justify-end gap-2 pt-3 border-t">
-        <button onclick="document.getElementById('budgetModal').classList.add('hidden')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg">ปิด</button>
-        <button onclick="saveBudgets()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg">บันทึกงบตั้งต้น</button>
+      <div id="budgetSettingsList" class="space-y-2.5 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto pr-1"></div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="document.getElementById('budgetModal').classList.add('hidden')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg">ปิด</button>
+        <button onclick="saveBudgets()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg">บันทึกงบตั้งต้น</button>
       </div>
     </div>
   </div>
@@ -545,7 +580,26 @@
       }
     }
 
-    // Toggle Custom Doc Type Input
+    // Responsive Mobile Sidebar Toggle
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    function closeSidebarIfMobile() {
+      if (window.innerWidth < 768) {
+        toggleMobileSidebar();
+      }
+    }
+
     function toggleCustomDocType(prefix) {
       const select = document.getElementById(`${prefix}DocType`);
       const customDiv = document.getElementById(`${prefix}CustomDocDiv`);
@@ -657,15 +711,15 @@
       const thHeader = document.getElementById('thAmountHeader');
 
       if (view === 'EXPENSE') {
-        expBtn.className = 'px-3 py-1 rounded-md bg-white text-indigo-700 shadow-xs font-bold';
-        infBtn.className = 'px-3 py-1 rounded-md text-slate-600 hover:text-emerald-700 font-medium';
+        expBtn.className = 'flex-1 sm:flex-none px-3 py-1 rounded-md bg-white text-indigo-700 shadow-xs font-bold text-center';
+        infBtn.className = 'flex-1 sm:flex-none px-3 py-1 rounded-md text-slate-600 hover:text-emerald-700 font-medium text-center';
         thHeader.textContent = 'จำนวนเงินเบิก';
-        thHeader.className = 'py-2.5 px-3 text-right whitespace-nowrap text-amber-700';
+        thHeader.className = 'py-2.5 px-2.5 text-right whitespace-nowrap text-amber-700';
       } else {
-        infBtn.className = 'px-3 py-1 rounded-md bg-white text-emerald-700 shadow-xs font-bold';
-        expBtn.className = 'px-3 py-1 rounded-md text-slate-600 hover:text-indigo-700 font-medium';
+        infBtn.className = 'flex-1 sm:flex-none px-3 py-1 rounded-md bg-white text-emerald-700 shadow-xs font-bold text-center';
+        expBtn.className = 'flex-1 sm:flex-none px-3 py-1 rounded-md text-slate-600 hover:text-indigo-700 font-medium text-center';
         thHeader.textContent = 'จำนวนเงินที่ได้รับ';
-        thHeader.className = 'py-2.5 px-3 text-right whitespace-nowrap text-emerald-700';
+        thHeader.className = 'py-2.5 px-2.5 text-right whitespace-nowrap text-emerald-700';
       }
       renderApp();
     }
@@ -679,7 +733,7 @@
       const catOptions = cats.map(c => `<option value="${c}">${c}</option>`).join('');
       if (expCat) expCat.innerHTML = catOptions;
       if (infCat) infCat.innerHTML = catOptions;
-      if (filterCat) filterCat.innerHTML = `<option value="ALL">ทุกหมวดหมู่งบประมาณ</option>` + catOptions;
+      if (filterCat) filterCat.innerHTML = `<option value="ALL">ทุกหมวดงบ</option>` + catOptions;
 
       const expResp = document.getElementById('expResponsible');
       if (expResp) expResp.innerHTML = teachers.map(t => `<option value="${t}">${t}</option>`).join('');
@@ -775,7 +829,6 @@
       renderApp();
     }
 
-    // Expense Add/Delete
     function handleAddExpense(e) {
       e.preventDefault();
       const docTypeSelect = document.getElementById('expDocType').value;
@@ -811,7 +864,6 @@
       }
     }
 
-    // Inflow Add/Delete
     function handleAddInflow(e) {
       e.preventDefault();
       const docTypeSelect = document.getElementById('inflowDocType').value;
@@ -858,13 +910,12 @@
       else if (type === 'นส') colorClass = 'bg-rose-50 text-rose-700 border-rose-200';
 
       return `
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold border ${colorClass}">
+        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-semibold border ${colorClass}">
           <span>${type}</span>${no ? `<span class="opacity-75 font-normal">#${no}</span>` : ''}
         </span>
       `;
     }
 
-    // ================= REPORT SYSTEM FUNCTIONS =================
     const THAI_MONTHS = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
     function openReportModal() {
@@ -894,7 +945,7 @@
       let filteredInflows = [];
 
       if (periodType === 'MONTHLY') {
-        const monthVal = document.getElementById('reportMonthInput').value; // YYYY-MM
+        const monthVal = document.getElementById('reportMonthInput').value;
         if (!monthVal) return;
         const [year, month] = monthVal.split('-');
         const thaiYear = parseInt(year) + 543;
@@ -904,7 +955,7 @@
         filteredTx = transactions.filter(t => t.date.startsWith(monthVal));
         filteredInflows = inflows.filter(i => i.date.startsWith(monthVal));
       } else {
-        const fYear = document.getElementById('reportFiscalYearSelect').value; // e.g. 2569
+        const fYear = document.getElementById('reportFiscalYearSelect').value;
         headerSubtitle.textContent = `ประจำปีงบประมาณ พ.ศ. ${fYear} (1 ตุลาคม ${parseInt(fYear)-544} - 30 กันยายน ${parseInt(fYear)-543})`;
 
         const startCE = `${parseInt(fYear) - 544}-10-01`;
@@ -914,7 +965,6 @@
         filteredInflows = inflows.filter(i => i.date >= startCE && i.date <= endCE);
       }
 
-      // Calculate summaries
       const totalBaseBudget = Object.values(baseBudgets).reduce((a, b) => a + b, 0);
       const totalInflow = filteredInflows.reduce((a, b) => a + b.amount, 0);
       const totalSpent = filteredTx.reduce((a, b) => a + b.amount, 0);
@@ -925,7 +975,6 @@
       document.getElementById('repCardSpent').textContent = '-' + formatNumber(totalSpent);
       document.getElementById('repCardRemain').textContent = formatNumber(totalRemain);
 
-      // Render Table
       const catSpent = {};
       const catInflow = {};
       Object.keys(baseBudgets).forEach(c => {
@@ -948,14 +997,58 @@
         const remain = (base + inf) - sp;
         return `
           <tr class="hover:bg-slate-50 border-b">
-            <td class="py-2 px-2.5 font-medium text-slate-800 border-r border-slate-200">${c}</td>
-            <td class="py-2 px-2.5 text-right border-r border-slate-200">${formatNumber(base)}</td>
-            <td class="py-2 px-2.5 text-right border-r border-slate-200 text-emerald-700">${inf > 0 ? '+' + formatNumber(inf) : '-'}</td>
-            <td class="py-2 px-2.5 text-right border-r border-slate-200 text-amber-700">${sp > 0 ? '-' + formatNumber(sp) : '-'}</td>
-            <td class="py-2 px-2.5 text-right font-bold text-indigo-900">${formatNumber(remain)}</td>
+            <td class="py-1.5 px-2 font-medium text-slate-800 border-r border-slate-200">${c}</td>
+            <td class="py-1.5 px-2 text-right border-r border-slate-200">${formatNumber(base)}</td>
+            <td class="py-1.5 px-2 text-right border-r border-slate-200 text-emerald-700">${inf > 0 ? '+' + formatNumber(inf) : '-'}</td>
+            <td class="py-1.5 px-2 text-right border-r border-slate-200 text-amber-700">${sp > 0 ? '-' + formatNumber(sp) : '-'}</td>
+            <td class="py-1.5 px-2 text-right font-bold text-indigo-900">${formatNumber(remain)}</td>
           </tr>
         `;
       }).join('');
+    }
+
+    function backupAllData() {
+      const dataToBackup = {
+        baseBudgets: baseBudgets,
+        teachers: teachers,
+        projects: projects,
+        transactions: transactions,
+        inflows: inflows,
+        backupDate: new Date().toISOString()
+      };
+
+      const blob = new Blob([JSON.stringify(dataToBackup, null, 2)], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `FinTrack_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+    }
+
+    function restoreAllData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const restored = JSON.parse(e.target.result);
+          if (restored.baseBudgets && restored.transactions) {
+            localStorage.setItem('budget_allocation', JSON.stringify(restored.baseBudgets));
+            localStorage.setItem('budget_teachers', JSON.stringify(restored.teachers || DEFAULT_TEACHERS));
+            localStorage.setItem('budget_projects', JSON.stringify(restored.projects || DEFAULT_PROJECTS));
+            localStorage.setItem('budget_transactions', JSON.stringify(restored.transactions || []));
+            localStorage.setItem('budget_inflows', JSON.stringify(restored.inflows || []));
+
+            alert('นำเข้าข้อมูลสำเร็จแล้ว!');
+            location.reload();
+          } else {
+            alert('รูปแบบไฟล์สำรองข้อมูลไม่ถูกต้อง');
+          }
+        } catch (err) {
+          alert('เกิดข้อผิดพลาดในการอ่านไฟล์สำรองข้อมูล');
+        }
+      };
+      reader.readAsText(file);
     }
 
     function renderApp() {
@@ -1042,18 +1135,18 @@
         } else {
           tbody.innerHTML = filtered.map(t => `
             <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-              <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap text-xs">${t.date}</td>
-              <td class="py-2.5 px-3 whitespace-nowrap">${getDocBadge(t.docType, t.docNo)}</td>
-              <td class="py-2.5 px-3 font-medium text-indigo-700 whitespace-nowrap"><span class="bg-indigo-50 px-2 py-0.5 rounded text-xs">${t.category}</span></td>
-              <td class="py-2.5 px-3">
+              <td class="py-2.5 px-2.5 text-slate-600 whitespace-nowrap text-xs">${t.date}</td>
+              <td class="py-2.5 px-2 whitespace-nowrap">${getDocBadge(t.docType, t.docNo)}</td>
+              <td class="py-2.5 px-2.5 font-medium text-indigo-700 whitespace-nowrap"><span class="bg-indigo-50 px-2 py-0.5 rounded text-[11px]">${t.category}</span></td>
+              <td class="py-2.5 px-2.5">
                 <div class="font-medium text-slate-800">${t.title}</div>
-                <div class="text-[11px] text-slate-500 flex flex-wrap gap-2 mt-0.5">
+                <div class="text-[10px] text-slate-500 flex flex-wrap gap-1.5 mt-0.5">
                   ${t.project ? `<span class="bg-slate-100 px-1.5 rounded">📂 ${t.project}</span>` : ''}
                   ${t.responsible ? `<span class="text-indigo-600">👤 ${t.responsible}</span>` : ''}
                 </div>
               </td>
-              <td class="py-2.5 px-3 text-right font-semibold text-amber-700 whitespace-nowrap">-${formatNumber(t.amount)}</td>
-              <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <td class="py-2.5 px-2.5 text-right font-semibold text-amber-700 whitespace-nowrap">-${formatNumber(t.amount)}</td>
+              <td class="py-2.5 px-2 text-center whitespace-nowrap">
                 <button onclick="deleteTransaction(${t.id})" class="text-rose-500 hover:text-rose-700 p-1 font-bold">✕</button>
               </td>
             </tr>
@@ -1072,15 +1165,15 @@
         } else {
           tbody.innerHTML = filteredInflows.map(inf => `
             <tr class="hover:bg-slate-50 transition border-b border-slate-100 bg-emerald-50/20">
-              <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap text-xs">${inf.date}</td>
-              <td class="py-2.5 px-3 whitespace-nowrap">${getDocBadge(inf.docType, inf.docNo)}</td>
-              <td class="py-2.5 px-3 font-medium text-emerald-700 whitespace-nowrap"><span class="bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-xs">${inf.category}</span></td>
-              <td class="py-2.5 px-3">
+              <td class="py-2.5 px-2.5 text-slate-600 whitespace-nowrap text-xs">${inf.date}</td>
+              <td class="py-2.5 px-2 whitespace-nowrap">${getDocBadge(inf.docType, inf.docNo)}</td>
+              <td class="py-2.5 px-2.5 font-medium text-emerald-700 whitespace-nowrap"><span class="bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[11px]">${inf.category}</span></td>
+              <td class="py-2.5 px-2.5">
                 <div class="font-medium text-slate-800">${inf.title}</div>
-                ${inf.note ? `<div class="text-[11px] text-slate-400">ที่มา: ${inf.note}</div>` : ''}
+                ${inf.note ? `<div class="text-[10px] text-slate-400">ที่มา: ${inf.note}</div>` : ''}
               </td>
-              <td class="py-2.5 px-3 text-right font-semibold text-emerald-600 whitespace-nowrap">+${formatNumber(inf.amount)}</td>
-              <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <td class="py-2.5 px-2.5 text-right font-semibold text-emerald-600 whitespace-nowrap">+${formatNumber(inf.amount)}</td>
+              <td class="py-2.5 px-2 text-center whitespace-nowrap">
                 <button onclick="deleteInflow(${inf.id})" class="text-rose-500 hover:text-rose-700 p-1 font-bold">✕</button>
               </td>
             </tr>
@@ -1105,7 +1198,7 @@
           labels: labels,
           datasets: [
             {
-              label: 'งบประมาณรวม (ตั้งต้น+รับเข้า)',
+              label: 'งบประมาณรวม',
               data: budgetData,
               backgroundColor: 'rgba(99, 102, 241, 0.35)',
               borderColor: 'rgb(99, 102, 241)',
@@ -1113,7 +1206,7 @@
               borderRadius: 6
             },
             {
-              label: 'ยอดเบิกจ่ายแล้ว',
+              label: 'เบิกจ่ายแล้ว',
               data: spentData,
               backgroundColor: 'rgba(245, 158, 11, 0.85)',
               borderColor: 'rgb(245, 158, 11)',
@@ -1125,10 +1218,12 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'top' } },
+          plugins: { 
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 } } } 
+          },
           scales: {
-            x: { ticks: { maxRotation: 30 } },
-            y: { ticks: { callback: v => v.toLocaleString() } }
+            x: { ticks: { maxRotation: 45, font: { size: 9 } } },
+            y: { ticks: { callback: v => v.toLocaleString(), font: { size: 9 } } }
           }
         }
       });
