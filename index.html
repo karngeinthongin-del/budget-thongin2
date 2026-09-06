@@ -78,9 +78,14 @@
           <p class="text-[10px] text-indigo-200 leading-tight">รร.บ้านทองอินทร์</p>
         </div>
       </div>
-      <button onclick="toggleMobileSidebar()" class="p-2 rounded-lg bg-indigo-800 text-white hover:bg-indigo-700 focus:outline-none">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="syncDataFromCloud()" title="ซิงค์ข้อมูล" class="p-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-emerald-300">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+        <button onclick="toggleMobileSidebar()" class="p-2 rounded-lg bg-indigo-800 text-white hover:bg-indigo-700 focus:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
     </div>
 
     <div id="sidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden md:hidden"></div>
@@ -97,6 +102,14 @@
           </div>
         </div>
         <button onclick="toggleMobileSidebar()" class="md:hidden text-indigo-300 hover:text-white p-1">✕</button>
+      </div>
+
+      <div class="px-4 py-2 bg-indigo-950/70 border-b border-indigo-800/80 flex items-center justify-between text-[11px]">
+        <div class="flex items-center gap-1.5">
+          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="cloudStatusText" class="text-indigo-200">ออฟไลน์</span>
+        </div>
+        <button onclick="syncDataFromCloud()" class="text-indigo-300 hover:text-white underline">ซิงค์ทันที</button>
       </div>
 
       <nav class="flex-1 p-3 space-y-1 text-xs overflow-y-auto">
@@ -122,16 +135,21 @@
           งบตั้งต้นประจำปี
         </button>
 
-        <div class="pt-3 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-indigo-300 border-t border-indigo-800/60 mt-3">ย้ายข้อมูล / สำรองข้อมูล</div>
+        <div class="pt-3 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-indigo-300 border-t border-indigo-800/60 mt-3">ระบบคลาวด์และย้ายข้อมูล</div>
+
+        <button onclick="openCloudConfigModal(); closeSidebarIfMobile();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-yellow-200 bg-indigo-950/60 hover:bg-indigo-800 transition font-medium">
+          <svg class="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+          ตั้งค่าคลาวด์ซิงค์ข้ามเครื่อง
+        </button>
 
         <button onclick="backupAllData()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-indigo-100 hover:bg-indigo-800 transition font-medium">
           <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-          สำรองข้อมูล (ไปเครื่องอื่น)
+          สำรองไฟล์ (.JSON)
         </button>
 
         <label class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-indigo-100 hover:bg-indigo-800 transition font-medium cursor-pointer">
           <svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          <span>นำเข้าข้อมูล (จากเครื่องเดิม)</span>
+          <span>นำเข้าไฟล์สำรอง (.JSON)</span>
           <input type="file" id="restoreFileInput" accept=".json" onchange="restoreAllData(event)" class="hidden">
         </label>
       </nav>
@@ -216,7 +234,7 @@
                   <option value="บฝ">บฝ (ใบนำฝาก/โอน)</option>
                   <option value="นส">นส (หนังสือจัดสรร)</option>
                 </select>
-                <select id="filterCategory" onchange="renderApp()" class="px-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none flex-1 sm:flex-none max-w-[140px]">
+                <select id="filterCategory" onchange="renderApp()" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none flex-1 sm:flex-none max-w-[140px]">
                   <option value="ALL">ทุกหมวดงบ</option>
                 </select>
                 <input type="text" id="searchKeyword" oninput="renderApp()" placeholder="ค้นหารายการ..." class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none w-full sm:w-36">
@@ -386,6 +404,36 @@
     </div>
   </div>
 
+  <div id="cloudConfigModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+          ตั้งค่าคลาวด์ซิงค์ข้ามเครื่อง (Google Sheets)
+        </h3>
+        <button onclick="document.getElementById('cloudConfigModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <p class="text-slate-600 leading-relaxed">
+          นำ <b>Web App URL</b> ที่ได้จากการทำตามขั้นตอนที่ 1 (Apps Script) มาวางในช่องด้านล่างนี้ ข้อมูลบนคอมพิวเตอร์และมือถือจะเชื่อมต่อตรงกันอัตโนมัติ:
+        </p>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Apps Script Web App URL (/exec):</label>
+          <input type="url" id="cloudApiUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-3 border-t">
+        <button onclick="clearCloudConfig()" class="text-xs text-rose-500 hover:text-rose-700">ลบการเชื่อมต่อ</button>
+        <div class="flex gap-2">
+          <button onclick="document.getElementById('cloudConfigModal').classList.add('hidden')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg">ปิด</button>
+          <button onclick="saveCloudConfig()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow">บันทึก & ซิงค์</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="reportModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3 sm:p-4">
     <div class="bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-6 shadow-2xl space-y-3 sm:space-y-4 max-h-[90vh] flex flex-col">
       <div class="flex justify-between items-center border-b pb-2.5 no-print">
@@ -539,10 +587,10 @@
   </div>
 
   <script>
-    // Authentication State
     const AUTH_KEY = 'banthongin_auth_status';
     const DEFAULT_USER = 'admin';
     const DEFAULT_PASS = '123456';
+    const CLOUD_API_KEY = 'banthongin_cloud_api_url';
 
     function checkAuth() {
       const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
@@ -580,7 +628,6 @@
       }
     }
 
-    // Responsive Mobile Sidebar Toggle
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('sidebarBackdrop');
@@ -595,9 +642,7 @@
     }
 
     function closeSidebarIfMobile() {
-      if (window.innerWidth < 768) {
-        toggleMobileSidebar();
-      }
+      if (window.innerWidth < 768) toggleMobileSidebar();
     }
 
     function toggleCustomDocType(prefix) {
@@ -610,7 +655,6 @@
       }
     }
 
-    // Default Seed Data
     const DEFAULT_BASE_BUDGETS = {
       "ค่าจัดการเรียนการสอน": 295510,
       "ค่าหนังสือเรียน": 144112,
@@ -645,18 +689,11 @@
 
     const DEFAULT_TRANSACTIONS = [
       { id: 1, date: "2025-10-10", docType: "บค", docNo: "01/69", category: "ค่าอุปกรณ์การเรียน", project: "โครงการสนับสนุนค่าใช้จ่ายในการจัดการศึกษาขั้นพื้นฐาน (เรียนฟรี 15 ปี)", responsible: "ครูปฐมวัย (นางนิตยา)", title: "จัดซื้ออุปกรณ์การเรียน ปฐมวัย", amount: 220, note: "เบิกจ่ายงวด 1" },
-      { id: 2, date: "2025-10-22", docType: "บค", docNo: "02/69", category: "ค่ากิจกรรมพัฒนาผู้เรียน", project: "โครงการกิจกรรมพัฒนาผู้เรียนและทัศนศึกษา", responsible: "ครูวิชาการ (นางสาวสุภาพร)", title: "กิจกรรมค่ายวิชาการ", amount: 7600, note: "" },
-      { id: 3, date: "2025-10-29", docType: "บจ", docNo: "01/69", category: "ค่าเครื่องแบบนักเรียน", project: "โครงการสนับสนุนค่าใช้จ่ายในการจัดการศึกษาขั้นพื้นฐาน (เรียนฟรี 15 ปี)", responsible: "ครูการเงิน (นางพัชรี)", title: "จ่ายเงินสดค่าเครื่องแบบนักเรียน", amount: 20000, note: "ผู้ปกครองรับเงิน" },
-      { id: 4, date: "2025-10-29", docType: "บค", docNo: "03/69", category: "ค่าจัดการเรียนการสอน", project: "โครงการพัฒนาคุณภาพการจัดการศึกษา", responsible: "ครูวิชาการ (นางสาวสุภาพร)", title: "วัสดุการศึกษาและค่าบริหารจัดการ", amount: 42642, note: "รอบที่ 1" },
-      { id: 5, date: "2025-10-31", docType: "บจ", docNo: "02/69", category: "เงินอุดหนุน กสศ. (ทุนเสมอภาค)", project: "โครงการเงินอุดหนุนนักเรียนทุนเสมอภาค กสศ.", responsible: "ครูผู้รับผิดชอบงาน กสศ.", title: "จ่ายเงินอุดหนุน กสศ. ให้นักเรียนกลุ่มเป้าหมาย", amount: 12000, note: "ภาคเรียนที่ 1/69" },
-      { id: 6, date: "2025-11-08", docType: "บร", docNo: "01/69", category: "รายได้สถานศึกษา", project: "โครงการปรับปรุงภูมิทัศน์และสาธารณูปโภคสถานศึกษา", responsible: "ครูพัสดุ (นายสมชาย)", title: "ค่าไฟฟ้าและค่าน้ำประปา", amount: 22355, note: "ประจำเดือน ต.ค." }
+      { id: 2, date: "2025-10-22", docType: "บค", docNo: "02/69", category: "ค่ากิจกรรมพัฒนาผู้เรียน", project: "โครงการกิจกรรมพัฒนาผู้เรียนและทัศนศึกษา", responsible: "ครูวิชาการ (นางสาวสุภาพร)", title: "กิจกรรมค่ายวิชาการ", amount: 7600, note: "" }
     ];
 
     const DEFAULT_INFLOWS = [
-      { id: 101, date: "2025-10-01", docType: "นส", docNo: "ศธ 04055/124", category: "ค่าจัดการเรียนการสอน", title: "เงินจัดสรรอุดหนุนรายหัว งวดที่ 1", amount: 150000, note: "สพป." },
-      { id: 102, date: "2025-10-05", docType: "บร", docNo: "01/69", category: "ปัจจัยพื้นฐานนักเรียนยากจน", title: "เงินจัดสรรปัจจัยพื้นฐานนักเรียนยากจน ภาคเรียนที่ 2/2568", amount: 35000, note: "กสศ." },
-      { id: 103, date: "2025-10-15", docType: "นส", docNo: "กสศ 02/69", category: "เงินอุดหนุน กสศ. (ทุนเสมอภาค)", title: "เงินอุดหนุน กสศ. ทุนเสมอภาค รอบที่ 1", amount: 45000, note: "กองทุนเพื่อความเสมอภาคทางการศึกษา" },
-      { id: 104, date: "2025-11-01", docType: "บฝ", docNo: "อบต-092", category: "เงินอุดหนุนอาหารกลางวัน", title: "เงินอุดหนุนอาหารกลางวัน เทอม 2", amount: 60000, note: "โอนเข้าบัญชีโรงเรียน" }
+      { id: 101, date: "2025-10-01", docType: "นส", docNo: "ศธ 04055/124", category: "ค่าจัดการเรียนการสอน", title: "เงินจัดสรรอุดหนุนรายหัว งวดที่ 1", amount: 150000, note: "สพป." }
     ];
 
     let baseBudgets = JSON.parse(localStorage.getItem('budget_allocation')) || DEFAULT_BASE_BUDGETS;
@@ -683,6 +720,121 @@
 
       populateDropdowns();
       renderApp();
+      updateCloudStatus();
+
+      // ซิงค์อัตโนมัติเมื่อเปิดใช้งานหากตั้งค่าไว้
+      const apiUrl = localStorage.getItem(CLOUD_API_KEY);
+      if (apiUrl) {
+        syncDataFromCloud(true);
+      }
+    }
+
+    // ================= CLOUD SYNC LOGIC (GOOGLE APPS SCRIPT) =================
+    function openCloudConfigModal() {
+      const savedUrl = localStorage.getItem(CLOUD_API_KEY) || '';
+      document.getElementById('cloudApiUrlInput').value = savedUrl;
+      document.getElementById('cloudConfigModal').classList.remove('hidden');
+    }
+
+    function saveCloudConfig() {
+      const url = document.getElementById('cloudApiUrlInput').value.trim();
+      if (url) {
+        localStorage.setItem(CLOUD_API_KEY, url);
+        document.getElementById('cloudConfigModal').classList.add('hidden');
+        updateCloudStatus();
+        syncDataFromCloud();
+      }
+    }
+
+    function clearCloudConfig() {
+      if (confirm("ต้องการยกเลิกการเชื่อมต่อคลาวด์และกลับมาใช้ระบบออฟไลน์ใช่หรือไม่?")) {
+        localStorage.removeItem(CLOUD_API_KEY);
+        document.getElementById('cloudConfigModal').classList.add('hidden');
+        updateCloudStatus();
+      }
+    }
+
+    function updateCloudStatus(isOnline = false) {
+      const apiUrl = localStorage.getItem(CLOUD_API_KEY);
+      const dot = document.getElementById('cloudStatusDot');
+      const text = document.getElementById('cloudStatusText');
+      if (!apiUrl) {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        text.textContent = "ออฟไลน์ (ในเครื่อง)";
+      } else if (isOnline) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        text.textContent = "เชื่อมต่อคลาวด์แล้ว";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        text.textContent = "พร้อมซิงค์";
+      }
+    }
+
+    // ดึงข้อมูลล่าสุดจาก Google Sheets
+    async function syncDataFromCloud(silent = false) {
+      const apiUrl = localStorage.getItem(CLOUD_API_KEY);
+      if (!apiUrl) {
+        if (!silent) openCloudConfigModal();
+        return;
+      }
+
+      try {
+        updateCloudStatus(false);
+        const response = await fetch(`${apiUrl}?action=getData`);
+        const data = await response.json();
+
+        if (data && data.baseBudgets) {
+          baseBudgets = data.baseBudgets;
+          if (data.teachers && data.teachers.length > 0) teachers = data.teachers;
+          if (data.projects && data.projects.length > 0) projects = data.projects;
+          transactions = data.transactions || [];
+          inflows = data.inflows || [];
+
+          localStorage.setItem('budget_allocation', JSON.stringify(baseBudgets));
+          localStorage.setItem('budget_teachers', JSON.stringify(teachers));
+          localStorage.setItem('budget_projects', JSON.stringify(projects));
+          localStorage.setItem('budget_transactions', JSON.stringify(transactions));
+          localStorage.setItem('budget_inflows', JSON.stringify(inflows));
+
+          populateDropdowns();
+          renderApp();
+          updateCloudStatus(true);
+          if (!silent) alert("ซิงค์ข้อมูลจากคลาวด์สำเร็จแล้ว!");
+        }
+      } catch (err) {
+        console.error("Cloud fetch error:", err);
+        updateCloudStatus(false);
+        if (!silent) alert("ไม่สามารถซิงค์ข้อมูลได้ กรุณาตรวจสอบอินเทอร์เน็ตหรือ URL");
+      }
+    }
+
+    // อัปเดตข้อมูลขึ้น Google Sheets ทุกครั้งที่มีการบันทึก
+    async function pushDataToCloud() {
+      const apiUrl = localStorage.getItem(CLOUD_API_KEY);
+      if (!apiUrl) return;
+
+      try {
+        const payload = {
+          action: 'saveAll',
+          data: {
+            baseBudgets: baseBudgets,
+            teachers: teachers,
+            projects: projects,
+            transactions: transactions,
+            inflows: inflows
+          }
+        };
+
+        await fetch(apiUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        updateCloudStatus(true);
+      } catch (err) {
+        console.error("Cloud push error:", err);
+      }
     }
 
     function switchFormMode(mode) {
@@ -774,6 +926,7 @@
         input.value = '';
         renderMasterListItems();
         populateDropdowns();
+        pushDataToCloud();
       }
     }
 
@@ -783,6 +936,7 @@
         localStorage.setItem('budget_teachers', JSON.stringify(teachers));
         renderMasterListItems();
         populateDropdowns();
+        pushDataToCloud();
       }
     }
 
@@ -795,6 +949,7 @@
         input.value = '';
         renderMasterListItems();
         populateDropdowns();
+        pushDataToCloud();
       }
     }
 
@@ -804,6 +959,7 @@
         localStorage.setItem('budget_projects', JSON.stringify(projects));
         renderMasterListItems();
         populateDropdowns();
+        pushDataToCloud();
       }
     }
 
@@ -827,6 +983,7 @@
       localStorage.setItem('budget_allocation', JSON.stringify(baseBudgets));
       document.getElementById('budgetModal').classList.add('hidden');
       renderApp();
+      pushDataToCloud();
     }
 
     function handleAddExpense(e) {
@@ -854,6 +1011,7 @@
       document.getElementById('expAmount').value = '';
       document.getElementById('expNote').value = '';
       renderApp();
+      pushDataToCloud();
     }
 
     function deleteTransaction(id) {
@@ -861,6 +1019,7 @@
         transactions = transactions.filter(t => t.id !== id);
         localStorage.setItem('budget_transactions', JSON.stringify(transactions));
         renderApp();
+        pushDataToCloud();
       }
     }
 
@@ -888,6 +1047,7 @@
       document.getElementById('inflowNote').value = '';
       switchTableView('INFLOW');
       renderApp();
+      pushDataToCloud();
     }
 
     function deleteInflow(id) {
@@ -895,6 +1055,7 @@
         inflows = inflows.filter(i => i.id !== id);
         localStorage.setItem('budget_inflows', JSON.stringify(inflows));
         renderApp();
+        pushDataToCloud();
       }
     }
 
@@ -952,8 +1113,8 @@
         const monthName = THAI_MONTHS[parseInt(month) - 1];
         headerSubtitle.textContent = `ประจำเดือน ${monthName} พ.ศ. ${thaiYear}`;
 
-        filteredTx = transactions.filter(t => t.date.startsWith(monthVal));
-        filteredInflows = inflows.filter(i => i.date.startsWith(monthVal));
+        filteredTx = transactions.filter(t => t.date && t.date.startsWith(monthVal));
+        filteredInflows = inflows.filter(i => i.date && i.date.startsWith(monthVal));
       } else {
         const fYear = document.getElementById('reportFiscalYearSelect').value;
         headerSubtitle.textContent = `ประจำปีงบประมาณ พ.ศ. ${fYear} (1 ตุลาคม ${parseInt(fYear)-544} - 30 กันยายน ${parseInt(fYear)-543})`;
@@ -1082,14 +1243,14 @@
 
       inflows.forEach(inf => {
         if (catInflow[inf.category] !== undefined) {
-          catInflow[inf.category] += inf.amount;
-          catBudgets[inf.category] += inf.amount;
+          catInflow[inf.category] += Number(inf.amount);
+          catBudgets[inf.category] += Number(inf.amount);
         }
       });
 
       transactions.forEach(t => {
         if (catSpent[t.category] !== undefined) {
-          catSpent[t.category] += t.amount;
+          catSpent[t.category] += Number(t.amount);
         }
       });
 
@@ -1126,7 +1287,8 @@
         const filtered = transactions.filter(t => {
           const matchDoc = filterDoc === 'ALL' || t.docType === filterDoc;
           const matchCat = filterCat === 'ALL' || t.category === filterCat;
-          const matchSearch = t.title.toLowerCase().includes(search) || (t.note && t.note.toLowerCase().includes(search));
+          const matchSearch = (t.title && t.title.toLowerCase().includes(search)) || 
+                              (t.note && t.note.toLowerCase().includes(search));
           return matchDoc && matchCat && matchSearch;
         });
 
@@ -1156,7 +1318,7 @@
         const filteredInflows = inflows.filter(inf => {
           const matchDoc = filterDoc === 'ALL' || inf.docType === filterDoc;
           const matchCat = filterCat === 'ALL' || inf.category === filterCat;
-          const matchSearch = inf.title.toLowerCase().includes(search);
+          const matchSearch = inf.title && inf.title.toLowerCase().includes(search);
           return matchDoc && matchCat && matchSearch;
         });
 
